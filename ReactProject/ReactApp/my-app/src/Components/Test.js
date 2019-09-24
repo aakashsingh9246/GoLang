@@ -4,51 +4,80 @@ import { Grommet, Heading, Button, Box } from 'grommet'
 export default class Test extends Component {
 	constructor(props){
 		super(props)
-		this.onclick = this.onclick.bind(this)
-		this.updateTime = this.updateTime.bind(this)
+		
+		this.createFile = this.createFile.bind(this)
+		this.updateFile = this.updateFile.bind(this)
+		this.deleteFile = this.deleteFile.bind(this)
 		this.state ={
-			showTime: false,
-			time: undefined
+			val: undefined
 		}
 	}
 
-	onclick(){
-		this.setState({
-			showTime: true
-		})
+	createFile(){
+		var xhr = new XMLHttpRequest();
+		var temp = 0
+        xhr.open('POST', 'http://localhost:8080/start', true);
+        xhr.addEventListener('readystatechange', function(){
+            if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200){
+                var item = xhr.responseText;
+                console.log(item);
+                temp = item
+                alert(temp)
+            }
+        });
+        xhr.send();
+        alert(temp)
+        this.setState({
+        	val : temp
+        })
+	}
+
+	updateFile(){
 
 	}
 
-	updateTime(){
-			this.setState({
-				time: new Date().toLocaleString()
-			})
+	deleteFile(){
+
 	}
 
 	componentDidMount(){
-		this.setIntervalID = setInterval(() => this.updateTime(),1000)
+	
 	}
 
 	componentWillUnmount(){
-		clearInterval(this.setIntervalID)
+		
 	}
 
 	render() {
 		let timeZone
-		if(this.state.showTime){
+		if(this.state.val){
 			timeZone = (<Box border={{ color: 'brand', size: 'small' }}
 				pad="medium"
 				margin={"small"}>
-				{this.state.time}
+				{this.state.val}
 
 			</Box>)
 		}
 
 		return (
 			<Grommet className="App">
-      			<Button
-  					label="Start"
-  					onClick={() => {this.onclick()}}/>
+			<Box direction={'row'}>
+				<Box>
+      				<Button
+  						label="Start"
+  						onClick={() => {this.createFile()}}/>
+  				</Box>
+  				<Box>
+      				<Button
+  						label="Update"
+  						onClick={() => {this.updateFile()}}/>
+  				</Box>
+  				<Box>
+      				<Button
+  						label="Delete"
+  						onClick={() => {this.deleteFile()}}/>
+  				</Box>
+  				</Box>
   					{timeZone}
 			</Grommet>
 		)
