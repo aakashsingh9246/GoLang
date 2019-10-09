@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<script type="text/javascript">
+	let socket = new WebSocket("ws://localhost:8080/show")
+	socket.onopen = () => {
+		console.log("successfully connected!");
+		socket.send("hi from client");		
+	}
+	socket.onclose = (event) => {
+			console.log("Socket connection is lost ", event)
+		}
+	socket.onerror = (error) =>{
+		console.log("Socket Error ", error)
+	}
+
+	socket.onmessage = (msg) =>{
+		console.log(msg.data)
+	}
+</script>
+</body>
+</html>
