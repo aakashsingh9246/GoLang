@@ -6,20 +6,28 @@ import(
 	"io/ioutil"
 	"os"
 	"net/http"
+	"log"
+	"strconv"
+	"time"
 )
 
 type Data struct{
 	Val int `json: "val"`
 }
 
+var lineintext int
+
 func main(){
 	http.HandleFunc("/", index)
 	http.HandleFunc("/start", createFile)
 	http.HandleFunc("/update", update)
 	http.HandleFunc("/read", readData)
+	http.HandleFunc("/delete", deleteFile)
 	http.HandleFunc("/getFile", showFile)
 	http.Handle("/favicon.ico", http.NotFoundHandler())
 	http.ListenAndServe(":8080", nil)
+	go startLog()
+
 }
 
 func setupResponse(w *http.ResponseWriter, req *http.Request) {
@@ -90,6 +98,32 @@ func update(w http.ResponseWriter, req *http.Request){
    		return
    	}
    	fmt.Fprintln(w,post.Val)
+
+}
+
+func startLog(){
+	for{
+		time.Sleep(2*time.Second)
+		updateLog()
+	}
+}
+
+func updateLog(){
+	file, err := os.OpenFile("test.txt", os.O_RDWR | os.O_APPEND, 0666)     
+    if err != nil {
+        log.Fatalf("failed opening file: %s", err)
+    }
+    defer file.Close()
+      
+	for i:=0;i<10;i++{
+		lineintext+=1
+		str := "line no "+strconv.Itoa(lineintext)
+		fmt.Println(str)
+		fmt.Fprintln(file,str)
+		if err!=nil{
+			log.Fatalf("Failed to update ",err)
+			}	
+		}
 }
 
 func readData(w http.ResponseWriter, req *http.Request){
@@ -115,4 +149,14 @@ func showFile(w http.ResponseWriter, req *http.Request) {
 	setupResponse(&w, req)
 	update(w,req)
 	http.ServeFile(w, req, "myData.json")
+}
+
+
+func deleteFile(w http.ResponseWriter, req *http.Request){
+	setupResponse(&w, req)
+	err:= os.Remove("myData.json")
+	if err!=nil{
+		fmt.Println("Error in deleting JSON file: ", err)
+		return 
+	}
 }

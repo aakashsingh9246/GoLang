@@ -15,29 +15,53 @@ export default class Test extends Component {
 
 	createFile(){
 		var xhr = new XMLHttpRequest();
-		var temp = 0
-        xhr.open('POST', 'http://localhost:8080/start', true);
+		var temp = 0	
+        xhr.open('POST', 'http://localhost:8080/start', false);
         xhr.addEventListener('readystatechange', function(){
             if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200){
                 var item = xhr.responseText;
                 console.log(item);
                 temp = item
-                alert(temp)
             }
         });
         xhr.send();
-        alert(temp)
         this.setState({
         	val : temp
         })
 	}
 
 	updateFile(){
-
+		var xhr = new XMLHttpRequest();
+		var temp = 0	
+        xhr.open('POST', 'http://localhost:8080/update', false);
+        xhr.addEventListener('readystatechange', function(){
+            if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200){
+                var item = xhr.responseText;
+                console.log(item);
+                temp = item
+            }
+        });
+        xhr.send();
+        this.setState({
+        	val : temp
+        })
 	}
 
 	deleteFile(){
-
+		var xhr = new XMLHttpRequest();
+		var temp = 0	
+        xhr.open('POST', 'http://localhost:8080/delete', false);
+        xhr.addEventListener('readystatechange', function(){
+            if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200){
+                var item = xhr.responseText;
+                console.log(item);
+                temp = item
+            }
+        });
+        xhr.send();
+        this.setState({
+        	val : temp
+        })
 	}
 
 	componentDidMount(){

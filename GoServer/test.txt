@@ -1,0 +1,10 @@
+Log statement  0
+Log statement  1
+Log statement  2
+Log statement  3
+Log statement  4
+Log statement  5
+Log statement  6
+Log statement  7
+Log statement  8
+Log statement  9

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<p id="parentID"></p>
+<script type="text/javascript">
+	let socket = new WebSocket("ws://localhost:8080/show")
+	socket.onopen = () => {
+		console.log("successfully connected!");
+		socket.send("hi from client");		
+	}
+	socket.onclose = (event) => {
+			console.log("Socket connection is lost ", event)
+		}
+	socket.onerror = (error) =>{
+		console.log("Socket Error ", error)
+	}
+	socket.onmessage = (msg) =>{
+
+		var breakme = document.createElement("br");
+
+		var textnode = document.createTextNode(msg.data); 
+		document.getElementById("parentID").appendChild(textnode)
+		document.getElementById("parentID").appendChild(breakme)
+		
+	}
+</script>
+</body>
+</html>
