@@ -18,6 +18,7 @@ func sort(arr []int)[]int{
 			arr[j]=arr[j-1]
 			j--
 		}
+		arr[j] = temp
 	}
 	return arr
 }
