@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 )
+// Bubble Sort is slowest algorithm to sort can be used when input data is less
 
 type more func(int,int)bool 
 
